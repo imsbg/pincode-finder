@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site.name }} - Search Post Office & Zip Codes</title>
+    <meta name="description" content="{{ site.description }}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@100..900&display=swap" rel="stylesheet"> 
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Noto Sans Oriya"', 'sans-serif'], },
+                    colors: { indigo: { 50: '#eef2ff', 100: '#e0e7ff', 600: '#4f46e5', 800: '#3730a3', 900: '#312e81', } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; }
+        .md3-transition { transition: all 0.3s cubic-bezier(0.2, 0, 0, 1); }
+        input:focus { outline: none; }
+        .card-enter { opacity: 0; transform: translateY(20px); }
+        .card-enter-active { opacity: 1; transform: translateY(0); }
+        .spinner {
+            border: 4px solid #e0e7ff; border-top: 4px solid #4f46e5; border-radius: 50%;
+            width: 44px; height: 44px; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="text-gray-800 font-sans min-h-screen flex flex-col relative">
+
+    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none font-medium"></div>
+
+    <header class="bg-indigo-600 text-white py-4 px-6 shadow-md sticky top-0 z-20 flex justify-between items-center rounded-b-xl md3-transition">
+        <h1 id="header-title" class="text-2xl font-bold tracking-wide cursor-pointer" onclick="goHome()">ଭାରତ ପିନକୋଡ୍ ଖୋଜନ୍ତୁ</h1>
+        <button id="lang-toggle" onclick="toggleLanguage()" class="md3-transition bg-indigo-50 text-indigo-800 font-semibold py-1.5 px-6 rounded-full text-sm shadow hover:bg-white hover:shadow-md">
+            English
+        </button>
+    </header>
+
+    <!-- Injects index.html here -->
+    {{ content }}
+
+    <footer class="bg-indigo-900 text-indigo-50 py-5 text-center mt-auto md3-transition rounded-t-xl">
+        <a href="https://play.google.com/store/apps/dev?id=6501689567504406715" target="_blank" rel="noopener noreferrer" class="text-sm font-bold hover:text-white hover:underline md3-transition">
+            <span id="footer-text">Sandeep Biswal Gଙ୍କ ଅନ୍ୟ ପ୍ରକଳ୍ପ ଦେଖନ୍ତୁ</span>
+        </a>
+    </footer>
+
+    <!-- Link to external JS -->
+    <script src="{{ site.baseurl }}/assets/js/app.js"></script>
+</body>
+</html>
