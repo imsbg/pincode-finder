@@ -424,7 +424,7 @@
             if (navigator.share) {
                 try { await navigator.share({ title, text, url }); } catch (err) { }
             } else {
-                navigator.clipboard.writeText(`${text}\n${url}`).then(() => showToast(i18n[currentLang].linkCopied));
+                navigator.clipboard.writeText(`${text} : ${url}`).then(() => showToast(i18n[currentLang].linkCopied));
             }
         }
 
