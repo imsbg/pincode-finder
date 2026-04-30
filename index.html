@@ -443,7 +443,7 @@
             const po = currentPostOffices.find(p => p.Name === poName);
             const t = i18n[currentLang];
             
-            const shareText = `📍 ${po.Name} (Pin: ${po.Pincode})\n\n${t.branchType}\n${po.BranchType}\n\n${t.delivery}\n${po.DeliveryStatus}\n\n${t.districtState}\n${po.District}, ${po.State}\n\n🔗`;
+            const shareText = `📍 ${po.Name} (Pin: ${po.Pincode})\n\n${t.branchType} : ${po.BranchType}\n\n${t.delivery} : ${po.DeliveryStatus}\n\n${t.districtState} : ${po.District}, ${po.State}\n\n🔗`;
             
             if(activeFilter !== poName) {
                 renderResults(currentPostOffices, poName);
