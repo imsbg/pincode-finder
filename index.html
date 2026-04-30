@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Requirements -->
-    <title>India Pincode Finder - Search Post Office & Zip Codes</title>
-    <meta name="description" content="Find any Pincode or Post Office in India. Free, fast, and ad-free tool in Odia and English.">
+    <!-- ================= SEO METADATA ================= -->
+    <title>India Pincode & Place Finder</title>
+    <meta name="description" content="Find any Pincode or Post Office in India by Number or Place Name. Free, fast, and ad-free tool in Odia and English.">
+    <meta name="keywords" content="pincode finder, search by place, india pincode, post office search, pin code tracker, odia pincode, find pin code">
+    <meta name="author" content="Sandeep Biswal G">
+    <meta name="robots" content="index, follow">
     
-    <!-- Unified Font for Odia and English -->
+    <!-- Open Graph -->
+    <meta property="og:title" content="India Pincode & Place Finder">
+    <meta property="og:description" content="Search any Post Office by Pincode or Place Name in Odia and English.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://imsbg.github.io/pincode-finder/">
+    <meta property="og:image" content="https://images.igdb.com/igdb/image/upload/t_original/clhls.webp">
+    <link rel="icon" href="https://images.igdb.com/igdb/image/upload/t_original/clhls.webp" type="image/webp">
+    <!-- Unified Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@100..900&display=swap" rel="stylesheet"> 
@@ -20,9 +30,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['"Noto Sans Oriya"', 'sans-serif'], },
-                    colors: {
-                        indigo: { 50: '#eef2ff', 100: '#e0e7ff', 600: '#4f46e5', 800: '#3730a3', 900: '#312e81', }
-                    }
+                    colors: { indigo: { 50: '#eef2ff', 100: '#e0e7ff', 600: '#4f46e5', 800: '#3730a3', 900: '#312e81', } }
                 }
             }
         }
@@ -36,23 +44,22 @@
         .card-enter-active { opacity: 1; transform: translateY(0); }
         
         .spinner {
-            border: 4px solid #e0e7ff; 
-            border-top: 4px solid #4f46e5; 
-            border-radius: 50%;
-            width: 44px; height: 44px;
-            animation: spin 1s linear infinite;
+            border: 4px solid #e0e7ff; border-top: 4px solid #4f46e5; border-radius: 50%;
+            width: 44px; height: 44px; animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .promo-gradient-1 { background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%); }
+        .promo-gradient-2 { background: linear-gradient(135deg, #9333ea 0%, #4c1d95 100%); }
     </style>
 </head>
 <body class="text-gray-800 font-sans min-h-screen flex flex-col relative">
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none font-medium"></div>
+    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none font-medium text-center min-w-max"></div>
 
     <!-- Header -->
-    <header class="bg-indigo-600 text-white py-4 px-6 shadow-md sticky top-0 z-20 flex justify-between items-center rounded-b-xl md3-transition">
-        <h1 id="header-title" class="text-2xl font-bold tracking-wide cursor-pointer" onclick="goHome()">ଭାରତ ପିନକୋଡ୍ ଖୋଜନ୍ତୁ</h1>
+    <header class="bg-indigo-600 text-white py-4 px-6 shadow-md sticky top-0 z-30 flex justify-between items-center rounded-b-xl md3-transition">
+        <h1 id="header-title" class="text-2xl font-bold tracking-wide cursor-pointer" onclick="goHome()">ପିନକୋଡ୍ / ସ୍ଥାନ ଖୋଜନ୍ତୁ</h1>
         <button id="lang-toggle" onclick="toggleLanguage()" class="md3-transition bg-indigo-50 text-indigo-800 font-semibold py-1.5 px-6 rounded-full text-sm shadow hover:bg-white hover:shadow-md">
             English
         </button>
@@ -62,24 +69,37 @@
     <main class="flex-grow flex flex-col items-center px-4 py-12 w-full max-w-5xl mx-auto">
         
         <!-- Search Section -->
-        <div class="w-full max-w-2xl relative flex flex-col items-center mb-10">
+        <div class="w-full max-w-2xl relative flex flex-col items-center mb-10 z-20">
             <div class="w-full bg-indigo-50 p-2 border border-indigo-100 rounded-full shadow-sm flex items-center md3-transition focus-within:border-indigo-400 focus-within:shadow-md">
+                <!-- Changed to accept text and numbers -->
                 <input 
-                    type="text" 
-                    id="pincode-input" 
+                    type="text" id="pincode-input" 
                     class="w-full bg-transparent py-3 pl-6 pr-4 text-xl text-gray-800 placeholder-gray-500"
-                    maxlength="6" 
-                    pattern="\d*"
-                    oninput="validateInput(this)"
-                    placeholder="୬-ଅଙ୍କ ବିଶିଷ୍ଟ ପିନକୋଡ୍...">
-                <button 
-                    id="search-btn"
-                    onclick="searchPincode()" 
-                    class="md3-transition bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 hover:shadow-lg whitespace-nowrap">
+                    oninput="validateInput(this)" placeholder="ପିନକୋଡ୍ କିମ୍ବା ସ୍ଥାନର ନାମ...">
+                <button id="search-btn" onclick="searchPincode()" class="md3-transition bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 hover:shadow-lg whitespace-nowrap">
                     ଖୋଜନ୍ତୁ
                 </button>
             </div>
             <p id="error-msg" class="text-red-500 text-sm mt-4 hidden font-medium bg-red-50 px-4 py-2 rounded-full"></p>
+        </div>
+
+        <!-- Empty State Promo -->
+        <div id="empty-state-promo" class="w-full max-w-2xl hidden md3-transition card-enter card-enter-active mb-10">
+            <div class="promo-gradient-1 p-8 rounded-3xl shadow-xl border border-indigo-400 text-white flex flex-col sm:flex-row items-center gap-6 transform hover:scale-[1.02] transition-transform">
+                <div class="flex-grow text-center sm:text-left">
+                    <span class="bg-white/20 text-indigo-50 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block shadow-sm">
+                        <span id="promo-label-main">PROMO</span>
+                    </span>
+                    <h2 class="text-3xl font-extrabold mb-2">Odia Bhasa</h2>
+                    <p class="text-indigo-100 text-lg mb-6">ଶିଖିବା ଓ ପଢିବାପାଇଁ ସର୍ବଶ୍ରେଷ୍ଠ ଓଡ଼ିଆ ଆପ୍ | Learn Odia easily today!</p>
+                    <a href="https://play.google.com/store/apps/details?id=in.sandeep.odiabhasa" target="_blank" rel="noopener noreferrer" class="md3-transition inline-block bg-white text-indigo-700 px-8 py-3 rounded-full font-bold shadow-md hover:bg-indigo-50 hover:shadow-lg">
+                        <span id="promo-btn-main">ଡାଉନଲୋଡ୍ କରନ୍ତୁ</span>
+                    </a>
+                </div>
+                <div class="hidden sm:flex bg-white p-3 rounded-[1.25rem] shadow-inner items-center justify-center">
+                    <img src="https://odiabhasa.pages.dev/images/app.png" alt="Odia Bhasa Logo" class="w-24 h-24 rounded-2xl shadow-sm object-cover">
+                </div>
+            </div>
         </div>
 
         <!-- Loading State -->
@@ -99,7 +119,7 @@
                 </h2>
             </div>
             <div class="flex gap-3 mt-4 sm:mt-0">
-                <button onclick="copyPincode()" class="md3-transition flex items-center gap-2 bg-indigo-50 text-indigo-800 px-4 py-2 rounded-full font-medium hover:bg-indigo-100 text-sm">
+                <button onclick="copyQuery()" class="md3-transition flex items-center gap-2 bg-indigo-50 text-indigo-800 px-4 py-2 rounded-full font-medium hover:bg-indigo-100 text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                     <span id="copy-btn-text">କପି କରନ୍ତୁ</span>
                 </button>
@@ -118,38 +138,44 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-indigo-900 text-indigo-50 py-5 text-center mt-auto md3-transition rounded-t-xl">
+    <footer class="bg-indigo-900 text-indigo-50 py-5 text-center mt-auto md3-transition rounded-t-xl z-20">
         <a href="https://play.google.com/store/apps/dev?id=6501689567504406715" target="_blank" rel="noopener noreferrer" class="text-sm font-bold hover:text-white hover:underline md3-transition">
             <span id="footer-text">Sandeep Biswal Gଙ୍କ ଅନ୍ୟ ପ୍ରକଳ୍ପ ଦେଖନ୍ତୁ</span>
         </a>
     </footer>
 
     <script>
-        // --- Settings & i18n ---
         let currentLang = localStorage.getItem('appLang') || 'or'; 
         let currentPostOffices = []; 
         let activeFilter = null;
 
         const i18n = {
             or: {
-                title: "ଭାରତ ପିନକୋଡ୍ ଖୋଜନ୍ତୁ", toggleBtn: "English", placeholder: "୬-ଅଙ୍କ ବିଶିଷ୍ଟ ପିନକୋଡ୍...",
+                title: "ପିନକୋଡ୍ କିମ୍ବା ସ୍ଥାନ ଖୋଜନ୍ତୁ", toggleBtn: "English", placeholder: "ପିନକୋଡ୍ କିମ୍ବା ସ୍ଥାନର ନାମ...",
                 searchBtn: "ଖୋଜନ୍ତୁ", poName: "ଉପ-ଡାକଘର", branchType: "ଶାଖା ପ୍ରକାର", delivery: "ବିତରଣ ସ୍ଥିତି",
                 districtState: "ଜିଲ୍ଲା ଏବଂ ରାଜ୍ୟ", mapBtn: "ମାନଚିତ୍ରରେ ଦେଖନ୍ତୁ", copyBtn: "କପି କରନ୍ତୁ",
                 shareBtn: "ସେୟାର କରନ୍ତୁ", copied: "କପି ହୋଇଛି!", linkCopied: "ଲିଙ୍କ୍ କପି ହୋଇଛି!",
-                loading: "ଅନୁସନ୍ଧାନ କରାଯାଉଛି...", invalidLength: "ଦୟାକରି ସଠିକ୍ ୬-ଅଙ୍କ ବିଶିଷ୍ଟ ପିନକୋଡ୍ ଦିଅନ୍ତୁ।",
+                loading: "ଅନୁସନ୍ଧାନ କରାଯାଉଛି...", invalidInput: "ଦୟାକରି ୬-ଅଙ୍କର ପିନକୋଡ୍ କିମ୍ବା ସ୍ଥାନର ନାମ ଦିଅନ୍ତୁ।",
                 noData: "କୌଣସି ତଥ୍ୟ ମିଳିଲା ନାହିଁ।", summaryText: "ଫଳାଫଳ:", 
-                footerText: "Sandeep Biswal Gଙ୍କ ଅନ୍ୟ ପ୍ରକଳ୍ପ ଦେଖନ୍ତୁ", sharePO: "ଏହି ଡାକଘର ସେୟାର କରନ୍ତୁ"
+                footerText: "Sandeep Biswal Gଙ୍କ ଅନ୍ୟ ପ୍ରକଳ୍ପ ଦେଖନ୍ତୁ", sharePO: "ଏହି ଡାକଘର ସେୟାର କରନ୍ତୁ",
+                promoBadge: "ପ୍ରୋମୋ", downloadBtn: "ଡାଉନଲୋଡ୍ କରନ୍ତୁ"
             },
             en: {
-                title: "India Pincode Finder", toggleBtn: "ଓଡ଼ିଆ", placeholder: "Enter 6-digit Pincode...",
+                title: "Pincode & Place Finder", toggleBtn: "ଓଡ଼ିଆ", placeholder: "Enter Pincode or Place Name...",
                 searchBtn: "Search", poName: "Post Office", branchType: "Branch Type", delivery: "Delivery Status",
-                districtState: "District & State", mapBtn: "View on Map", copyBtn: "Copy Pin",
+                districtState: "District & State", mapBtn: "View on Map", copyBtn: "Copy Text",
                 shareBtn: "Share Link", copied: "Copied!", linkCopied: "Link Copied!",
-                loading: "Searching...", invalidLength: "Please enter a valid 6-digit pincode.",
+                loading: "Searching...", invalidInput: "Please enter a valid 6-digit Pincode or Place Name.",
                 noData: "No data found.", summaryText: "Results:", 
-                footerText: "See other projects by Sandeep Biswal G", sharePO: "Share this Post Office"
+                footerText: "See other projects by Sandeep Biswal G", sharePO: "Share this Post Office",
+                promoBadge: "PROMO", downloadBtn: "Install App"
             }
         };
+
+        const promoApps = [
+            { title: "Odia Bhasa", desc: "Odia Sikhibara sahaja upaya", link: "https://play.google.com/store/apps/details?id=in.sandeep.odiabhasa", bgClass: "promo-gradient-1", btnTextClass: "text-indigo-700" },
+            { title: "Plyxo Games", desc: "Where Every Move Matters.", link: "https://play.google.com/store/apps/details?id=in.sandeep.plyxogames", bgClass: "promo-gradient-2", btnTextClass: "text-purple-700" }
+        ];
 
         const elements = {
             input: document.getElementById('pincode-input'),
@@ -158,71 +184,68 @@
             grid: document.getElementById('results-grid'),
             summary: document.getElementById('result-summary'),
             pinSpan: document.getElementById('searched-pin'),
-            clearBtn: document.getElementById('clear-filter-btn')
+            clearBtn: document.getElementById('clear-filter-btn'),
+            emptyPromo: document.getElementById('empty-state-promo')
         };
 
-        // --- Core Functions ---
         window.addEventListener('DOMContentLoaded', () => {
             applyLanguage();
             handleRouting();
+            if (!elements.input.value) showEmptyState();
         });
 
-        // Listen for back/forward navigation using Hashes
         window.addEventListener('hashchange', handleRouting);
+
+        function showEmptyState() {
+            elements.emptyPromo.classList.remove('hidden');
+            elements.summary.classList.add('hidden');
+            elements.grid.innerHTML = '';
+            document.getElementById('promo-label-main').innerText = i18n[currentLang].promoBadge;
+            document.getElementById('promo-btn-main').innerText = i18n[currentLang].downloadBtn;
+        }
 
         function goHome() {
             elements.input.value = '';
-            elements.summary.classList.add('hidden');
-            elements.grid.innerHTML = '';
             activeFilter = null;
             updateHash(null, null);
+            showEmptyState();
         }
 
-        // HASH ROUTING LOGIC (Perfect for GitHub Pages)
         function handleRouting() {
             const hash = window.location.hash;
-            if (!hash || !hash.startsWith('#/')) return;
-
-            // Remove '#/' and split by '/'
-            const parts = hash.substring(2).split('/'); 
-            const langFromUrl = parts[0];
-            const pinFromUrl = parts[1];
-            const poFromUrl = parts[2] ? decodeURIComponent(parts[2]) : null;
-
-            if (langFromUrl === 'english' && currentLang !== 'en') {
-                currentLang = 'en';
-                applyLanguage();
-            } else if (langFromUrl === 'odia' && currentLang !== 'or') {
-                currentLang = 'or';
-                applyLanguage();
-            }
-
-            if (pinFromUrl && /^\d{6}$/.test(pinFromUrl)) {
-                elements.input.value = pinFromUrl;
-                searchPincode(pinFromUrl, poFromUrl, false); 
-            }
-        }
-
-        function updateHash(pin, poName = null) {
-            if (!pin) {
-                window.history.pushState(null, '', window.location.pathname);
+            if (!hash || !hash.startsWith('#/')) {
+                if(!elements.input.value) showEmptyState();
                 return;
             }
 
-            const langStr = currentLang === 'or' ? 'odia' : 'english';
-            let newHash = `#/${langStr}/${pin}`;
-            if (poName) {
-                newHash += `/${encodeURIComponent(poName.toLowerCase())}`;
-            }
+            const parts = hash.substring(2).split('/'); 
+            const langFromUrl = parts[0];
+            const queryFromUrl = parts[1] ? decodeURIComponent(parts[1]) : null;
+            const poFromUrl = parts[2] ? decodeURIComponent(parts[2]) : null;
 
-            if (window.location.hash !== newHash) {
-                window.history.pushState(null, '', newHash);
+            if (langFromUrl === 'english' && currentLang !== 'en') { currentLang = 'en'; applyLanguage(); } 
+            else if (langFromUrl === 'odia' && currentLang !== 'or') { currentLang = 'or'; applyLanguage(); }
+
+            if (queryFromUrl) {
+                elements.input.value = queryFromUrl;
+                searchPincode(queryFromUrl, poFromUrl, false); 
             }
         }
 
+        function updateHash(query, poName = null) {
+            if (!query) { window.history.pushState(null, '', window.location.pathname); return; }
+            const langStr = currentLang === 'or' ? 'odia' : 'english';
+            let newHash = `#/${langStr}/${encodeURIComponent(query)}`;
+            if (poName) newHash += `/${encodeURIComponent(poName.toLowerCase())}`;
+            if (window.location.hash !== newHash) window.history.pushState(null, '', newHash);
+        }
+
         function validateInput(input) {
-            input.value = input.value.replace(/[^0-9]/g, '');
-            if(input.value.length === 6) searchPincode();
+            // Allow numbers, letters, spaces
+            input.value = input.value.replace(/[^a-zA-Z0-9\s]/g, '');
+            // Auto search ONLY if 6 precise digits are typed
+            if(/^\d{6}$/.test(input.value)) { searchPincode(); }
+            if(input.value.length === 0) showEmptyState();
         }
 
         function toggleLanguage() {
@@ -230,10 +253,9 @@
             localStorage.setItem('appLang', currentLang);
             applyLanguage();
             
-            if (elements.pinSpan.innerText.length >= 6) {
-                updateHash(elements.input.value, activeFilter);
-            }
+            if (elements.input.value.length >= 3) updateHash(elements.input.value, activeFilter);
             if (currentPostOffices.length > 0) renderResults(currentPostOffices, activeFilter);
+            if (elements.grid.innerHTML === '') showEmptyState();
         }
 
         function applyLanguage() {
@@ -249,6 +271,8 @@
             document.getElementById('share-btn-text').innerText = t.shareBtn;
             document.getElementById('summary-text').innerText = t.summaryText;
             document.getElementById('footer-text').innerText = t.footerText;
+            document.getElementById('promo-label-main').innerText = t.promoBadge;
+            document.getElementById('promo-btn-main').innerText = t.downloadBtn;
         }
 
         function showToast(msg) {
@@ -258,27 +282,34 @@
             setTimeout(() => toast.classList.add('opacity-0'), 2500);
         }
 
-        // --- Fetch API Logic ---
-        async function searchPincode(pinOverride = null, targetPO = null, updateUrl = true) {
-            const pincode = pinOverride || elements.input.value;
+        // --- DYNAMIC SEARCH LOGIC ---
+        async function searchPincode(queryOverride = null, targetPO = null, updateUrl = true) {
+            const query = (queryOverride || elements.input.value).trim();
             
             elements.error.classList.add('hidden');
+            elements.emptyPromo.classList.add('hidden');
             elements.summary.classList.add('hidden');
             elements.grid.innerHTML = '';
             
-            if (pincode.length !== 6) {
-                elements.error.innerText = i18n[currentLang].invalidLength;
+            // Check if Query is Numbers (Pincode) or Text (Place)
+            const isPincode = /^\d+$/.test(query);
+
+            if ((isPincode && query.length !== 6) || (!isPincode && query.length < 3)) {
+                elements.error.innerText = i18n[currentLang].invalidInput;
                 elements.error.classList.remove('hidden');
                 return;
             }
 
-            if (updateUrl) updateHash(pincode, targetPO);
+            if (updateUrl) updateHash(query, targetPO);
 
             elements.loading.classList.remove('hidden');
             elements.loading.classList.add('flex');
 
+            // Select appropriate endpoint
+            const endpoint = isPincode ? `pincode/${query}` : `postoffice/${query}`;
+
             try {
-                const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+                const response = await fetch(`https://api.postalpincode.in/${endpoint}`);
                 const data = await response.json();
 
                 elements.loading.classList.add('hidden');
@@ -292,6 +323,7 @@
                     currentPostOffices = [];
                     elements.error.innerText = i18n[currentLang].noData;
                     elements.error.classList.remove('hidden');
+                    showEmptyState();
                 }
             } catch (error) {
                 elements.loading.classList.add('hidden');
@@ -300,50 +332,81 @@
             }
         }
 
-        // --- Rendering ---
         function renderResults(postOffices, targetPO = null) {
             elements.grid.innerHTML = '';
             const t = i18n[currentLang];
             activeFilter = targetPO;
             
-            // Show/Hide back arrow based on filter
             elements.clearBtn.classList.toggle('hidden', !targetPO);
             elements.pinSpan.innerText = targetPO ? `${elements.input.value} ➔ ${targetPO}` : elements.input.value;
 
-            // Filter logic
             let dataToRender = postOffices;
             if (targetPO) {
                 const filtered = postOffices.filter(po => po.Name.toLowerCase() === targetPO.toLowerCase());
                 if(filtered.length > 0) dataToRender = filtered;
             }
 
-            dataToRender.forEach((po, index) => {
-                const mapLink = `https://www.google.com/maps/search/${encodeURIComponent(po.Name)}+${po.Pincode}`;
+            const shuffledAds = [...promoApps].sort(() => 0.5 - Math.random());
+            let ad1Index = 1; let ad2Index = 3; 
+            
+            if (dataToRender.length >= 4) {
+                ad1Index = Math.random() < 0.5 ? 1 : 2; 
+                ad2Index = ad1Index + 2 + Math.floor(Math.random() * 2); 
+            } else if (dataToRender.length === 3) { ad1Index = 1; ad2Index = 2; } 
+            else { ad1Index = 1; ad2Index = 2; }
 
+            let placedAd1 = false; let placedAd2 = false; let displayCounter = 0; 
+
+            function createPromoCard(promoObj, delayIndex) {
+                const div = document.createElement('div');
+                div.className = `md3-transition card-enter ${promoObj.bgClass} p-6 shadow-xl hover:shadow-2xl rounded-[24px] flex flex-col h-full relative text-white transform hover:-translate-y-1`;
+                div.innerHTML = `
+                    <div class="absolute top-5 right-5 bg-white/20 px-3 py-1 rounded shadow-sm text-xs font-bold tracking-widest uppercase">${t.promoBadge}</div>
+                    <div class="flex-grow flex flex-col justify-center mt-6 mb-4">
+                        <h3 class="text-3xl font-extrabold mb-3">${promoObj.title}</h3>
+                        <p class="text-white/90 font-medium text-lg">${promoObj.desc}</p>
+                    </div>
+                    <a href="${promoObj.link}" target="_blank" rel="noopener noreferrer" class="md3-transition w-full text-center bg-white ${promoObj.btnTextClass} py-3 rounded-full font-bold mt-auto hover:bg-gray-50 shadow-md">
+                        ${t.downloadBtn}
+                    </a>`;
+                setTimeout(() => { requestAnimationFrame(() => { div.classList.remove('card-enter'); div.classList.add('card-enter-active'); }); }, delayIndex * 50);
+                return div;
+            }
+
+            dataToRender.forEach((po, index) => {
+                if (index === ad1Index && !placedAd1) { elements.grid.appendChild(createPromoCard(shuffledAds[0], displayCounter++)); placedAd1 = true; }
+                if (index === ad2Index && !placedAd2) { elements.grid.appendChild(createPromoCard(shuffledAds[1], displayCounter++)); placedAd2 = true; }
+
+                const mapLink = `https://www.google.com/maps/search/${encodeURIComponent(po.Name)}+${po.Pincode}`;
                 const card = document.createElement('div');
                 card.className = "md3-transition card-enter bg-white p-6 shadow hover:shadow-xl rounded-[24px] border border-indigo-50 flex flex-col h-full relative group";
                 
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-5">
-                        <h3 class="text-2xl font-bold text-indigo-600 leading-tight w-5/6">${po.Name}</h3>
-                        <button onclick="shareSpecificPO('${po.Name}')" class="text-gray-300 hover:text-indigo-600 transition-colors p-1" title="${t.sharePO}">
+                        <div class="w-5/6">
+                            <h3 class="text-2xl font-bold text-indigo-600 leading-tight">${po.Name}</h3>
+                            <p class="text-sm font-semibold text-indigo-400 mt-1">Pin: ${po.Pincode}</p>
+                        </div>
+                        <button onclick="shareSpecificPO('${po.Name}')" class="text-gray-400 hover:text-indigo-600 transition-colors p-1" title="${t.sharePO}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
                         </button>
                     </div>
                     <div class="space-y-4 text-[15px] mb-8 flex-grow">
-                        <div class="flex justify-between items-center"><span class="font-bold text-indigo-900">${t.branchType}</span> <span class="text-gray-600">${po.BranchType}</span></div>
-                        <div class="flex justify-between items-center"><span class="font-bold text-indigo-900">${t.delivery}</span> <span class="text-gray-600">${po.DeliveryStatus}</span></div>
+                        <div class="flex justify-between items-center"><span class="font-bold text-indigo-900">${t.branchType}</span> <span class="text-gray-600 text-right">${po.BranchType}</span></div>
+                        <div class="flex justify-between items-center"><span class="font-bold text-indigo-900">${t.delivery}</span> <span class="text-gray-600 text-right">${po.DeliveryStatus}</span></div>
                         <div class="flex justify-between items-center"><span class="font-bold text-indigo-900">${t.districtState}</span> <span class="text-gray-600 text-right w-1/2">${po.District}, ${po.State}</span></div>
                     </div>
                     <a href="${mapLink}" target="_blank" rel="noopener noreferrer" class="md3-transition w-full flex items-center justify-center gap-2 bg-[#f0f4ff] text-indigo-800 py-3 rounded-full font-bold hover:bg-indigo-100 mt-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-700" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
                         ${t.mapBtn}
-                    </a>
-                `;
+                    </a>`;
                 elements.grid.appendChild(card);
-
-                setTimeout(() => { requestAnimationFrame(() => { card.classList.remove('card-enter'); card.classList.add('card-enter-active'); }); }, index * 50); 
+                
+                setTimeout(() => { requestAnimationFrame(() => { card.classList.remove('card-enter'); card.classList.add('card-enter-active'); }); }, displayCounter++ * 50); 
             });
+
+            if (!placedAd1) elements.grid.appendChild(createPromoCard(shuffledAds[0], displayCounter++));
+            if (!placedAd2) elements.grid.appendChild(createPromoCard(shuffledAds[1], displayCounter++));
         }
 
         function clearFilter() {
@@ -352,8 +415,8 @@
             updateHash(elements.input.value, null);
         }
 
-        // --- Sharing Functions (Using Hash URLs) ---
-        function copyPincode() {
+        // --- SHARING LOGIC ---
+        function copyQuery() {
             navigator.clipboard.writeText(elements.input.value).then(() => showToast(i18n[currentLang].copied));
         }
 
@@ -361,34 +424,35 @@
             if (navigator.share) {
                 try { await navigator.share({ title, text, url }); } catch (err) { }
             } else {
-                navigator.clipboard.writeText(url).then(() => showToast(i18n[currentLang].linkCopied));
+                navigator.clipboard.writeText(`${text}\n${url}`).then(() => showToast(i18n[currentLang].linkCopied));
             }
         }
 
         function shareMainLink() {
             const lang = currentLang === 'or' ? 'odia' : 'english';
-            const pin = elements.input.value;
-            // Build absolute URL with hash
-            const url = window.location.origin + window.location.pathname + `#/${lang}/${pin}`;
-            triggerShare(i18n[currentLang].title, `${i18n[currentLang].summaryText} ${pin}`, url);
+            const query = elements.input.value;
+            const url = window.location.origin + window.location.pathname + `#/${lang}/${encodeURIComponent(query)}`;
+            triggerShare(i18n[currentLang].title, `${i18n[currentLang].summaryText} ${query}`, url);
         }
 
         function shareSpecificPO(poName) {
             const lang = currentLang === 'or' ? 'odia' : 'english';
-            const pin = elements.input.value;
-            // Build absolute URL with hash including post office
-            const url = window.location.origin + window.location.pathname + `#/${lang}/${pin}/${encodeURIComponent(poName.toLowerCase())}`;
+            const query = elements.input.value;
+            const url = window.location.origin + window.location.pathname + `#/${lang}/${encodeURIComponent(query)}/${encodeURIComponent(poName.toLowerCase())}`;
             
-            // Auto update UI to show only this card when user clicks share
+            const po = currentPostOffices.find(p => p.Name === poName);
+            const t = i18n[currentLang];
+            
+            const shareText = `📍 ${po.Name} (Pin: ${po.Pincode})\n\n${t.branchType}\n${po.BranchType}\n\n${t.delivery}\n${po.DeliveryStatus}\n\n${t.districtState}\n${po.District}, ${po.State}\n\n🔗`;
+            
             if(activeFilter !== poName) {
                 renderResults(currentPostOffices, poName);
-                updateHash(pin, poName);
+                updateHash(query, poName);
             }
 
-            triggerShare(poName, `Post Office: ${poName}, Pincode: ${pin}`, url);
+            triggerShare(poName, shareText, url);
         }
 
-        // Search on Enter key
         elements.input.addEventListener('keypress', e => { if (e.key === 'Enter') searchPincode(); });
     </script>
 </body>
